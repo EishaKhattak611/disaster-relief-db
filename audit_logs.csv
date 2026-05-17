@@ -1,0 +1,101 @@
+audit_id,table_name,record_id,action,changed_by,changed_at,old_values,new_values
+1,Dispatch_Line_Items,33,INSERT,22,2025-10-24 01:53:07,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+2,Disaster_Zones,40,UPDATE,25,2025-11-28 15:37:40,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+3,Dispatch_Logs,13,INSERT,16,2025-09-09 04:49:53,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+4,Vehicles,29,UPDATE,15,2025-08-05 00:17:36,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+5,Dispatch_Line_Items,16,DELETE,14,2025-10-07 17:23:33,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+6,Dispatch_Logs,30,UPDATE,24,2025-09-22 03:45:26,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+7,Dispatch_Line_Items,48,DELETE,5,2026-02-12 04:50:51,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+8,Warehouse_Inventory,9,UPDATE,1,2025-10-24 16:01:24,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+9,Dispatch_Line_Items,28,UPDATE,5,2026-02-27 22:25:50,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+10,Disaster_Zones,28,INSERT,4,2025-10-11 04:29:02,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+11,Vehicles,50,UPDATE,14,2026-01-09 05:05:27,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+12,Warehouse_Inventory,36,UPDATE,8,2026-05-11 21:52:54,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+13,Vehicles,78,INSERT,23,2025-08-14 23:58:18,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+14,Dispatch_Line_Items,27,UPDATE,17,2025-11-05 14:15:47,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+15,Dispatch_Line_Items,7,UPDATE,8,2026-04-11 14:02:58,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+16,Dispatch_Logs,31,UPDATE,20,2025-09-06 19:14:03,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+17,Dispatch_Logs,47,DELETE,5,2026-02-15 20:41:38,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+18,Disaster_Zones,47,UPDATE,6,2026-03-30 02:39:27,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+19,Dispatch_Logs,76,INSERT,9,2025-11-19 01:27:00,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+20,Dispatch_Logs,51,UPDATE,21,2026-04-14 15:07:31,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+21,Disaster_Zones,52,INSERT,18,2026-05-03 22:25:46,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+22,Warehouse_Inventory,36,INSERT,3,2026-04-19 07:23:53,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+23,Warehouse_Inventory,69,UPDATE,19,2025-09-03 11:17:34,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+24,Disaster_Zones,31,INSERT,3,2026-03-11 04:13:22,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+25,Disaster_Zones,79,UPDATE,10,2025-10-29 04:20:55,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+26,Dispatch_Logs,18,UPDATE,6,2026-04-12 12:37:23,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+27,Vehicles,67,UPDATE,24,2025-12-11 06:04:44,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+28,Dispatch_Line_Items,17,UPDATE,9,2025-09-30 01:04:07,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+29,Dispatch_Line_Items,55,INSERT,3,2025-12-13 20:59:42,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+30,Dispatch_Logs,64,UPDATE,12,2025-08-29 18:11:24,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+31,Vehicles,22,UPDATE,9,2025-09-22 20:53:43,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+32,Dispatch_Logs,30,UPDATE,1,2025-08-23 00:26:50,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+33,Warehouse_Inventory,6,UPDATE,13,2025-10-16 06:30:56,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+34,Dispatch_Logs,71,UPDATE,23,2026-03-03 08:10:27,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+35,Dispatch_Line_Items,32,UPDATE,24,2026-01-11 09:52:34,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+36,Dispatch_Logs,74,UPDATE,17,2025-08-27 06:31:47,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+37,Warehouse_Inventory,67,DELETE,13,2025-09-05 16:56:00,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+38,Dispatch_Line_Items,40,UPDATE,18,2026-03-22 00:17:24,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+39,Dispatch_Line_Items,26,INSERT,10,2025-12-03 16:53:27,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+40,Dispatch_Line_Items,76,DELETE,25,2025-11-09 19:53:58,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+41,Warehouse_Inventory,20,INSERT,14,2025-08-13 08:28:59,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+42,Vehicles,45,UPDATE,23,2025-08-05 12:11:51,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+43,Dispatch_Logs,49,UPDATE,24,2026-01-05 03:47:04,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+44,Warehouse_Inventory,68,DELETE,14,2026-04-09 02:10:50,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+45,Warehouse_Inventory,36,INSERT,8,2026-04-24 15:02:20,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+46,Dispatch_Line_Items,59,DELETE,3,2025-09-18 18:24:07,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+47,Warehouse_Inventory,51,INSERT,19,2025-09-01 15:50:14,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+48,Warehouse_Inventory,31,INSERT,11,2026-02-18 11:52:42,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+49,Dispatch_Line_Items,58,INSERT,3,2025-11-12 04:57:20,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+50,Vehicles,14,INSERT,6,2026-03-19 16:58:06,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+51,Dispatch_Line_Items,53,INSERT,12,2025-11-15 16:27:13,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+52,Dispatch_Line_Items,60,INSERT,4,2025-09-16 05:44:18,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+53,Dispatch_Line_Items,78,INSERT,11,2025-10-15 03:19:15,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+54,Warehouse_Inventory,46,UPDATE,2,2026-01-01 09:28:20,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+55,Warehouse_Inventory,4,DELETE,15,2026-05-12 20:01:45,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+56,Warehouse_Inventory,13,UPDATE,5,2025-10-02 00:26:07,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+57,Dispatch_Logs,29,INSERT,13,2026-02-07 22:56:54,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+58,Dispatch_Logs,75,UPDATE,3,2025-08-12 02:20:50,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+59,Warehouse_Inventory,57,UPDATE,3,2026-01-17 04:27:39,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+60,Dispatch_Logs,60,INSERT,19,2026-03-10 14:22:53,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+61,Disaster_Zones,4,UPDATE,14,2025-10-28 12:53:12,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+62,Warehouse_Inventory,24,INSERT,15,2025-10-16 01:15:41,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+63,Vehicles,80,UPDATE,21,2025-12-30 18:09:50,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+64,Disaster_Zones,71,UPDATE,3,2025-12-22 13:56:42,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+65,Warehouse_Inventory,54,INSERT,17,2025-12-06 22:57:54,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+66,Vehicles,3,DELETE,23,2026-01-31 17:27:53,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+67,Vehicles,63,UPDATE,19,2026-04-15 11:42:33,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+68,Disaster_Zones,35,INSERT,11,2025-11-21 01:04:00,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+69,Dispatch_Line_Items,8,UPDATE,16,2026-04-29 13:00:49,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+70,Vehicles,30,DELETE,4,2025-12-05 23:54:56,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+71,Warehouse_Inventory,35,UPDATE,24,2025-08-29 07:59:18,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+72,Vehicles,50,UPDATE,6,2025-10-30 08:36:45,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+73,Vehicles,41,UPDATE,23,2026-01-31 21:32:17,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+74,Dispatch_Logs,46,DELETE,19,2025-10-12 20:30:07,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+75,Warehouse_Inventory,64,UPDATE,6,2026-04-09 01:22:55,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+76,Dispatch_Logs,8,INSERT,8,2025-08-11 19:10:02,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+77,Disaster_Zones,1,UPDATE,20,2025-11-12 04:45:03,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+78,Dispatch_Line_Items,23,DELETE,11,2025-08-31 00:47:52,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+79,Warehouse_Inventory,76,UPDATE,5,2025-09-26 19:09:42,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+80,Dispatch_Line_Items,10,UPDATE,22,2026-02-19 21:20:10,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+81,Dispatch_Logs,44,UPDATE,5,2025-10-20 15:54:21,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+82,Disaster_Zones,41,INSERT,18,2026-01-30 08:07:40,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+83,Vehicles,23,UPDATE,24,2025-12-29 04:38:11,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+84,Warehouse_Inventory,1,DELETE,19,2026-02-17 20:39:41,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+85,Dispatch_Logs,24,UPDATE,20,2025-11-22 23:17:19,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+86,Vehicles,14,DELETE,5,2026-01-17 02:49:58,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+87,Warehouse_Inventory,45,DELETE,6,2025-09-15 23:16:08,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+88,Dispatch_Line_Items,58,INSERT,7,2025-12-06 02:28:05,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+89,Dispatch_Line_Items,33,UPDATE,24,2025-08-01 01:45:10,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+90,Disaster_Zones,57,UPDATE,6,2026-02-28 17:57:09,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+91,Disaster_Zones,45,UPDATE,4,2026-04-03 21:02:46,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+92,Warehouse_Inventory,21,UPDATE,2,2025-12-29 00:43:51,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+93,Dispatch_Line_Items,34,DELETE,3,2026-01-23 06:11:36,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+94,Disaster_Zones,21,UPDATE,18,2025-09-17 12:18:15,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+95,Vehicles,79,DELETE,23,2025-08-16 15:42:14,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+96,Warehouse_Inventory,78,DELETE,6,2025-08-28 03:41:12,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+97,Dispatch_Line_Items,27,DELETE,14,2026-05-11 19:39:55,"{""status"": ""Failed"", ""notes"": ""Cancelled""}",
+98,Dispatch_Line_Items,37,INSERT,4,2025-08-26 14:18:18,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
+99,Vehicles,71,UPDATE,5,2025-08-28 13:08:14,"{""status"": ""Pending""}","{""status"": ""EnRoute""}"
+100,Dispatch_Logs,55,INSERT,22,2026-04-03 07:16:11,,"{""status"": ""Pending"", ""priority"": ""Medium""}"
