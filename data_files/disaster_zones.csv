@@ -1,0 +1,16 @@
+zone_id,name,description,severity_level,latitude,longitude,population_affected,is_active,reported_by,logged_at
+1,Swat Valley Flood Zone,Flash flooding in Swat river basin affecting multiple villages,High,35.2227,72.4258,45000,1,4,2025-07-20 17:08:14
+2,Balochistan Earthquake Zone,Seismic activity near Awaran district,Critical,26.4553,65.231,78000,1,8,2026-02-21 12:43:50
+3,Sindh Flood Plains,Indus river overflow affecting agricultural areas in Sindh,Critical,26.8943,68.5247,120000,1,10,2025-10-25 08:06:59
+4,Chitral Landslide Area,Monsoon triggered landslides blocking roads,High,35.8518,71.7864,15000,1,1,2026-01-21 11:57:05
+5,Dera Ghazi Khan Floods,Riverine flooding from hill torrents,High,30.0489,70.6455,35000,1,9,2025-11-20 12:47:05
+6,South Waziristan Crisis,Displacement from security operations,Medium,32.3046,69.8722,25000,1,21,2026-04-01 12:03:24
+7,Tharparkar Drought Zone,Severe drought affecting Thar desert communities,High,24.7414,69.8018,95000,0,1,2025-11-11 06:30:05
+8,Nowshera Flood Zone,Kabul river overflow affecting urban areas,Critical,34.0153,71.9747,60000,1,19,2025-11-13 01:23:34
+9,Muzaffarabad Earthquake Area,Aftershock-prone zone from 2005 fault line,Medium,34.3708,73.4712,30000,1,4,2025-12-24 11:25:14
+10,Kohistan Glacier Lake Zone,GLOF risk from glacial lake outbursts,Low,35.21,73.35,8000,1,14,2026-03-19 04:12:37
+11,Lasbela Coastal Flood Zone,Cyclone and storm surge risk area,Medium,25.84,66.66,20000,1,13,2025-10-06 09:16:26
+12,Dera Ismail Khan Heat Zone,Extreme heat wave affecting southern KP,Medium,31.831,70.9017,42000,1,2,2025-07-01 18:55:46
+13,Shangla Landslide Belt,Monsoon-triggered mass movement zone,High,34.88,72.6,12000,1,18,2025-10-09 13:15:39
+14,Jacobabad Extreme Heat Zone,Record temperatures exceeding 50C,High,28.2769,68.4514,55000,0,14,2025-12-17 22:41:18
+15,Mansehra Earthquake Risk,Seismic fault line through populated valleys,Low,34.33,73.2,18000,1,11,2025-09-02 10:56:03

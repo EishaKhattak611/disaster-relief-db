@@ -1,0 +1,13 @@
+warehouse_id,name,location,latitude,longitude,capacity_kg,contact_person,is_active
+1,Peshawar Central Warehouse,"University Road, Peshawar",34.0151,71.5249,49090.91,Faheem Baloch,1
+2,Islamabad Relief Hub,"Sector G-11, Islamabad",33.6844,73.0479,36755.04,Tahira Khan,1
+3,Karachi Port Warehouse,"Kemari, Karachi",24.8607,67.0011,47527.29,Adeel Afridi,1
+4,Lahore Distribution Center,"Multan Road, Lahore",31.5204,74.3587,42556.78,Lubna Orakzai,1
+5,Quetta Storage Facility,"Zarghoon Road, Quetta",30.1798,66.975,10735.05,Rabia Durrani,1
+6,Multan Relief Depot,"Bosan Road, Multan",30.1575,71.5249,40825.5,Hassan Durrani,1
+7,Sukkur Emergency Store,"Military Road, Sukkur",27.7052,68.8574,16228.84,Usman Durrani,1
+8,Abbottabad Logistics Base,"Mansehra Road, Abbottabad",34.1688,73.2215,44786.06,Shahid Niazi,1
+9,Hyderabad Supply Point,"Latifabad, Hyderabad",25.396,68.3578,46659.37,Nadia Malik,1
+10,Swat Relief Warehouse,"Mingora Bypass, Swat",34.7717,72.3609,41484.73,Shahid Khan,1
+11,Dera Ismail Khan Depot,"Tank Road, DI Khan",31.8626,70.9019,46601.93,Shahid Abbasi,1
+12,Chitral Emergency Base,Chitral Town Center,35.8518,71.7864,41483.72,Mehreen Malik,1

@@ -1,0 +1,51 @@
+vehicle_id,license_plate,type,capacity_kg,status,assigned_driver
+1,QTA-5167,Flatbed,6421.7,Available,
+2,SWT-3243,Cargo Van,10141.48,Available,31
+3,RWP-6753,Tanker,12589.01,Available,
+4,FSD-7718,Cargo Van,6911.32,Available,49
+5,DIR-1489,Ambulance,7974.05,InTransit,50
+6,LEA-5185,Pickup,12195.16,Available,
+7,SKR-1293,Cargo Van,6509.39,InTransit,
+8,GUJ-8199,Cargo Van,4037.77,InTransit,
+9,ABT-7065,Pickup,3050.36,Maintenance,
+10,QTA-7711,Truck,8582.38,Maintenance,
+11,ABT-7578,Pickup,12120.54,InTransit,45
+12,FSD-7351,Tanker,12317.59,Maintenance,
+13,KHI-9076,Cargo Van,13509.52,InTransit,34
+14,LEA-4643,Mini Truck,11776.29,Available,
+15,HYD-1369,Flatbed,4643.06,Available,43
+16,MRD-2367,Pickup,3853.29,InTransit,28
+17,KHI-6778,Ambulance,8367.86,Available,
+18,KHI-6481,Mini Truck,8969.15,InTransit,50
+19,GUJ-7914,Truck,14169.75,Available,39
+20,GWD-9047,Mini Truck,9247.16,Available,
+21,KHI-8056,Truck,6138.43,InTransit,49
+22,DIR-7757,Pickup,14720.47,Available,44
+23,LES-1475,Flatbed,6714.89,Maintenance,
+24,DIR-923,Ambulance,5997.01,Available,50
+25,GUJ-4658,Mini Truck,14292.46,Available,41
+26,LES-8937,Truck,14998.66,Available,50
+27,PSH-608,Pickup,3390.73,Available,
+28,SWT-7858,Flatbed,2158.65,Maintenance,
+29,HYD-4298,Mini Truck,5848.98,InTransit,48
+30,ABT-2783,Ambulance,2067.43,Available,47
+31,GUJ-6598,Flatbed,3375.78,Available,33
+32,ABT-5041,Mini Truck,10421.76,InTransit,44
+33,PSH-5788,Tanker,6711.48,Available,36
+34,LES-6982,Mini Truck,7607.92,Available,40
+35,SWT-7235,Pickup,11140.03,Maintenance,
+36,LEB-8917,Mini Truck,7510.71,Available,34
+37,FSD-4122,Mini Truck,14052.02,Available,50
+38,HYD-9436,Tanker,10188.73,Available,36
+39,DIR-8088,Pickup,5644.96,Available,
+40,LEB-9206,Truck,7991.1,Available,
+41,KHI-8104,Tanker,11493.39,InTransit,41
+42,HYD-382,Truck,4766.42,Available,
+43,MUL-7853,Tanker,8198.37,Available,36
+44,MUL-7534,Ambulance,4946.03,Available,36
+45,ABT-8879,Mini Truck,10507.37,Available,34
+46,QTA-9877,Ambulance,14717.4,InTransit,
+47,MUL-3039,Ambulance,705.15,Available,
+48,PSH-9166,Ambulance,10612.55,Available,41
+49,ABT-300,Tanker,4622.92,Available,27
+50,LEB-7927,Truck,12420.68,Available,
