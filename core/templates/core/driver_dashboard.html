@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+{% block title %}Driver Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Driver Dashboard</h1>
+        <p class="page-subtitle">Your assigned dispatches and delivery status</p>
+    </div>
+</div>
+
+<!-- Active Dispatches -->
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>Active Dispatches</h2>
+        <span class="badge badge-count">{{ active_dispatches|length }}</span>
+    </div>
+    <div class="panel-body">
+        {% for d in active_dispatches %}
+        <div class="dispatch-card">
+            <div class="dispatch-card-header">
+                <span class="mono">#{{ d.dispatch_id }}</span>
+                <span class="severity severity-{{ d.priority|lower }}">{{ d.priority }}</span>
+                <span class="status status-{{ d.status|lower }}">{{ d.status }}</span>
+            </div>
+            <div class="dispatch-card-body">
+                <div class="dispatch-info">
+                    <div class="dispatch-field">
+                        <span class="field-label">Destination</span>
+                        <span class="field-value">{{ d.zone.name }}</span>
+                    </div>
+                    <div class="dispatch-field">
+                        <span class="field-label">Vehicle</span>
+                        <span class="field-value">{{ d.vehicle.license_plate }} ({{ d.vehicle.type }})</span>
+                    </div>
+                    <div class="dispatch-field">
+                        <span class="field-label">Coordinates</span>
+                        <span class="field-value mono">{{ d.zone.latitude }}, {{ d.zone.longitude }}</span>
+                    </div>
+                    {% if d.notes %}
+                    <div class="dispatch-field">
+                        <span class="field-label">Notes</span>
+                        <span class="field-value">{{ d.notes }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="dispatch-actions">
+                    {% if d.status == 'Pending' %}
+                    <form method="post" action="{% url 'update_dispatch_status' d.dispatch_id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="EnRoute">
+                        <button type="submit" class="btn btn-primary">Mark Departed</button>
+                    </form>
+                    {% elif d.status == 'EnRoute' %}
+                    <form method="post" action="{% url 'update_dispatch_status' d.dispatch_id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="Delivered">
+                        <button type="submit" class="btn btn-success">Confirm Delivery</button>
+                    </form>
+                    <form method="post" action="{% url 'update_dispatch_status' d.dispatch_id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="Failed">
+                        <button type="submit" class="btn btn-danger">Report Failed</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state-lg">No active dispatches assigned to you.</div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Completed -->
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>Recent Completed</h2>
+    </div>
+    <div class="panel-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Zone</th>
+                    <th>Status</th>
+                    <th>Departed</th>
+                    <th>Arrived</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in completed_dispatches %}
+                <tr>
+                    <td class="mono">#{{ d.dispatch_id }}</td>
+                    <td>{{ d.zone.name }}</td>
+                    <td><span class="status status-{{ d.status|lower }}">{{ d.status }}</span></td>
+                    <td class="mono">{{ d.departure_time|date:"d M H:i"|default:"—" }}</td>
+                    <td class="mono">{{ d.arrival_time|date:"d M H:i"|default:"—" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="empty-state">No completed dispatches yet</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+{% block title %}Fleet Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Fleet Management</h1>
+        <p class="page-subtitle">Manage vehicles, assign drivers, update status</p>
+    </div>
+</div>
+
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>All Vehicles</h2>
+        <span class="badge badge-count">{{ vehicles|length }}</span>
+    </div>
+    <div class="panel-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>License Plate</th>
+                    <th>Type</th>
+                    <th>Capacity (kg)</th>
+                    <th>Status</th>
+                    <th>Assigned Driver</th>
+                    <th>Change Driver</th>
+                    <th>Change Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vehicles %}
+                <tr>
+                    <td class="mono">{{ v.vehicle_id }}</td>
+                    <td><strong>{{ v.license_plate }}</strong></td>
+                    <td>{{ v.type }}</td>
+                    <td class="mono">{{ v.capacity_kg }}</td>
+                    <td>
+                        {% if v.status == 'Available' %}
+                        <span class="status status-delivered">{{ v.status }}</span>
+                        {% elif v.status == 'InTransit' %}
+                        <span class="status status-enroute">{{ v.status }}</span>
+                        {% else %}
+                        <span class="status status-failed">{{ v.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if v.assigned_driver %}
+                        {{ v.assigned_driver.username }}
+                        {% else %}
+                        <span style="color: var(--text-muted);">Unassigned</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'assign_driver' v.vehicle_id %}" style="display: flex; gap: 0.25rem;">
+                            {% csrf_token %}
+                            <select name="driver_id" style="width: 150px; padding: 0.3rem 0.5rem; font-size: 0.8rem;">
+                                <option value="">-- None --</option>
+                                {% for d in drivers %}
+                                <option value="{{ d.user_id }}" {% if v.assigned_driver and v.assigned_driver.user_id == d.user_id %}selected{% endif %}>
+                                    {{ d.username }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Set</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'update_vehicle_status' v.vehicle_id %}" style="display: flex; gap: 0.25rem;">
+                            {% csrf_token %}
+                            <select name="status" style="width: 120px; padding: 0.3rem 0.5rem; font-size: 0.8rem;">
+                                <option value="Available" {% if v.status == 'Available' %}selected{% endif %}>Available</option>
+                                <option value="InTransit" {% if v.status == 'InTransit' %}selected{% endif %}>InTransit</option>
+                                <option value="Maintenance" {% if v.status == 'Maintenance' %}selected{% endif %}>Maintenance</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-secondary">Set</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

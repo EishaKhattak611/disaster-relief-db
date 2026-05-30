@@ -1,0 +1,252 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Operations Dashboard</h1>
+        <p class="page-subtitle">Real-time overview of disaster relief operations</p>
+    </div>
+    {% if role != 'Driver' and role != 'Viewer' %}
+    <a href="{% url 'create_dispatch' %}" class="btn btn-primary">+ New Dispatch</a>
+    {% endif %}
+</div>
+
+<!-- Stats Cards -->
+<div class="stats-grid">
+    <div class="stat-card stat-critical">
+        <div class="stat-number">{{ critical_zones }}</div>
+        <div class="stat-label">Critical Zones</div>
+        <div class="stat-icon">⚠</div>
+    </div>
+    <div class="stat-card stat-warning">
+        <div class="stat-number">{{ total_zones }}</div>
+        <div class="stat-label">Active Zones</div>
+        <div class="stat-icon">◎</div>
+    </div>
+    <div class="stat-card stat-info">
+        <div class="stat-number">{{ pending_dispatches }}</div>
+        <div class="stat-label">Pending</div>
+        <div class="stat-icon">◷</div>
+    </div>
+    <div class="stat-card stat-enroute">
+        <div class="stat-number">{{ enroute_dispatches }}</div>
+        <div class="stat-label">En Route</div>
+        <div class="stat-icon">▸</div>
+    </div>
+    <div class="stat-card stat-success">
+        <div class="stat-number">{{ delivered_dispatches }}</div>
+        <div class="stat-label">Delivered</div>
+        <div class="stat-icon">✓</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ available_vehicles }}<span class="stat-sub">/{{ total_vehicles }}</span></div>
+        <div class="stat-label">Vehicles Available</div>
+        <div class="stat-icon">⬡</div>
+    </div>
+</div>
+
+<!-- MAP -->
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>Operations Map — Pakistan</h2>
+        <div>
+            <span class="map-legend-item"><span class="map-dot map-dot-warehouse"></span> Warehouses</span>
+            <span class="map-legend-item"><span class="map-dot map-dot-zone"></span> Disaster Zones</span>
+        </div>
+    </div>
+    <div id="ops-map" style="height: 420px; background: var(--bg-secondary);"></div>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Active Disaster Zones -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Active Disaster Zones</h2>
+            <span class="badge badge-count">{{ active_zones|length }}</span>
+        </div>
+        <div class="panel-body">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Zone</th>
+                        <th>Severity</th>
+                        <th>Population</th>
+                        <th>Coords</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for zone in active_zones %}
+                    <tr onclick="window.location='{% url 'zone_detail' zone.zone_id %}'" class="clickable-row">
+                        <td><strong>{{ zone.name }}</strong></td>
+                        <td><span class="severity severity-{{ zone.severity_level|lower }}">{{ zone.severity_level }}</span></td>
+                        <td>{{ zone.population_affected|default:"—" }}</td>
+                        <td class="mono">{{ zone.latitude }}, {{ zone.longitude }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="empty-state">No active disaster zones</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Low Stock Alerts -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Low Stock Alerts</h2>
+            <a href="{% url 'inventory' %}" class="panel-link">View All →</a>
+        </div>
+        <div class="panel-body">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Warehouse</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in low_stock %}
+                    <tr>
+                        <td>{{ inv.item.name }}</td>
+                        <td>{{ inv.warehouse.name }}</td>
+                        <td><span class="stock-low">{{ inv.quantity_in_stock }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="empty-state">All stock levels healthy</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Dispatches -->
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>Recent Dispatches</h2>
+    </div>
+    <div class="panel-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Zone</th>
+                    <th>Vehicle</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created By</th>  
+                    <th>Role</th>
+                    <th>Departed</th>
+                    <th>Arrived</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in recent_dispatches %}
+                <tr onclick="window.location='{% url 'dispatch_detail' d.dispatch_id %}'" class="clickable-row">
+                    <td class="mono">#{{ d.dispatch_id }}</td>
+                    <td>{{ d.zone.name }}</td>
+                    <td>{{ d.vehicle.license_plate }}</td>
+                    <td><span class="severity severity-{{ d.priority|lower }}">{{ d.priority }}</span></td>
+                    <td><span class="status status-{{ d.status|lower }}">{{ d.status }}</span></td>
+                    <td>{{ d.user.username }}</td> 
+                    <td><span class="badge badge-table">{{ d.user.role }}</span></td>
+                    <td class="mono">{{ d.departure_time|date:"d M H:i"|default:"—" }}</td>
+                    <td class="mono">{{ d.arrival_time|date:"d M H:i"|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Leaflet.js -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+    .map-legend-item { margin-left: 1rem; font-size: 0.75rem; color: var(--text-secondary); }
+    .map-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+    .map-dot-warehouse { background: #4a7cff; }
+    .map-dot-zone { background: #ff4d4d; }
+    #ops-map { border-radius: 0 0 var(--radius) var(--radius); }
+    .leaflet-popup-content-wrapper { background: #161920; color: #e4e6ec; border: 1px solid #252830; border-radius: 6px; }
+    .leaflet-popup-tip { background: #161920; }
+    .leaflet-popup-content { font-family: 'Source Sans 3', sans-serif; font-size: 13px; margin: 10px 14px; }
+    .popup-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .popup-detail { color: #8b8f9a; font-size: 12px; }
+    .popup-severity { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+    .popup-severity.Critical { background: #2a1215; color: #ff4d4d; }
+    .popup-severity.High { background: #2a2015; color: #ff9f43; }
+    .popup-severity.Medium { background: #2a2615; color: #ffd43b; }
+    .popup-severity.Low { background: #122a1a; color: #26de81; }
+</style>
+<script>
+    const warehouses = {{ warehouses_json|safe }};
+    const zones = {{ zones_json|safe }};
+
+    // Center on Pakistan
+    const map = L.map('ops-map', {
+        zoomControl: true,
+        scrollWheelZoom: true,
+    }).setView([30.3753, 69.3451], 5);
+
+    // Dark map tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap © CARTO',
+        maxZoom: 18,
+    }).addTo(map);
+
+    // Warehouse markers (blue)
+    const warehouseIcon = L.divIcon({
+        className: 'custom-marker',
+        html: '<div style="width:12px;height:12px;background:#4a7cff;border:2px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(74,124,255,0.6);"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
+    });
+
+    warehouses.forEach(w => {
+        L.marker([w.latitude, w.longitude], {icon: warehouseIcon})
+            .addTo(map)
+            .bindPopup(`
+                <div class="popup-title">🏭 ${w.name}</div>
+                <div class="popup-detail">${w.latitude.toFixed(4)}, ${w.longitude.toFixed(4)}</div>
+            `);
+    });
+
+    // Zone markers (red, sized by severity)
+    const severitySize = { 'Critical': 16, 'High': 13, 'Medium': 10, 'Low': 8 };
+    const severityColor = { 'Critical': '#ff4d4d', 'High': '#ff9f43', 'Medium': '#ffd43b', 'Low': '#26de81' };
+
+    zones.forEach(z => {
+        const size = severitySize[z.severity_level] || 10;
+        const color = severityColor[z.severity_level] || '#ff4d4d';
+
+        const zoneIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid #fff;border-radius:50%;box-shadow:0 0 10px ${color}80;animation:pulse 2s infinite;"></div>`,
+            iconSize: [size + 4, size + 4],
+            iconAnchor: [(size + 4) / 2, (size + 4) / 2],
+        });
+
+        L.marker([z.latitude, z.longitude], {icon: zoneIcon})
+            .addTo(map)
+            .bindPopup(`
+                <div class="popup-title">⚠ ${z.name}</div>
+                <span class="popup-severity ${z.severity_level}">${z.severity_level}</span>
+                <div class="popup-detail" style="margin-top:4px;">Pop. affected: ${z.population_affected || 'Unknown'}</div>
+                <div class="popup-detail">${z.latitude.toFixed(4)}, ${z.longitude.toFixed(4)}</div>
+            `);
+    });
+
+    // Pulse animation
+    const style = document.createElement('style');
+    style.textContent = `@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }`;
+    document.head.appendChild(style);
+
+    // Fix map size after load
+    setTimeout(() => map.invalidateSize(), 200);
+</script>
+{% endblock %}

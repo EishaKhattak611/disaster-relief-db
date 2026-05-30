@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% block title %}Create User{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Create New User</h1>
+        <p class="page-subtitle">Create an account that populates both authentication and application tables</p>
+    </div>
+    <a href="{% url 'manage_users' %}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="panel" style="max-width: 600px;">
+    <div class="panel-header"><h2>Account Details</h2></div>
+    <div class="panel-body" style="padding: 1.25rem;">
+        <form method="post" action="{% url 'create_user' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="e.g. ahmed.khan" required>
+                <p class="form-help">Lowercase, no spaces. This is what they'll use to log in.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="e.g. ahmed.khan@relief.pk" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Temporary Password</label>
+                <input type="password" id="password" name="password" placeholder="Minimum 8 characters" required minlength="8">
+                <p class="form-help">Give this to the user. They should change it after first login.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select name="role" id="role" required>
+                    <option value="Viewer">Viewer — Read-only access</option>
+                    <option value="Driver">Driver — Assigned to vehicles, confirms deliveries</option>
+                    <option value="Coordinator" selected>Coordinator — Creates dispatches, manages zones</option>
+                    <option value="Admin">Admin — Full access including audit trail and user management</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Create User</button>
+                <a href="{% url 'manage_users' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

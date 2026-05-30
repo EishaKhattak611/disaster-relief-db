@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+{% block title %}Register Disaster Zone{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Register Disaster Zone</h1>
+        <p class="page-subtitle">Report a new disaster-affected area for relief coordination</p>
+    </div>
+    <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="dashboard-grid">
+    <div class="panel">
+        <div class="panel-header"><h2>Zone Details</h2></div>
+        <div class="panel-body" style="padding: 1.25rem;">
+            <form method="post" action="{% url 'register_zone' %}" id="zone-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="name">Zone Name</label>
+                    <input type="text" id="name" name="name" placeholder="e.g. Swat Valley Flood Zone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" rows="3" placeholder="Describe the disaster: type, cause, extent of damage, immediate needs..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="severity_level">Severity Level</label>
+                    <select name="severity_level" id="severity_level" required>
+                        <option value="Low">Low — Minor damage, limited displacement</option>
+                        <option value="Medium">Medium — Moderate damage, partial displacement</option>
+                        <option value="High" selected>High — Significant damage, large-scale displacement</option>
+                        <option value="Critical">Critical — Catastrophic, life-threatening, mass displacement</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input type="number" id="latitude" name="latitude" step="0.000001" min="-90" max="90" placeholder="e.g. 34.0151" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" id="longitude" name="longitude" step="0.000001" min="-180" max="180" placeholder="e.g. 71.5249" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="population_affected">Estimated Population Affected</label>
+                    <input type="number" id="population_affected" name="population_affected" min="0" placeholder="e.g. 50000">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Register Zone</button>
+                    <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header"><h2>How to Get Coordinates</h2></div>
+        <div class="panel-body" style="padding: 1.25rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.8;">
+            <strong style="color: var(--text-primary);">Step 1:</strong> Open <a href="https://www.google.com/maps" target="_blank">Google Maps</a> in a new tab<br><br>
+            <strong style="color: var(--text-primary);">Step 2:</strong> Search for the disaster location by typing the city or area name (e.g. "Chitral", "Awaran Balochistan", "Swat Valley")<br><br>
+            <strong style="color: var(--text-primary);">Step 3:</strong> Right-click on the exact location on the map<br><br>
+            <strong style="color: var(--text-primary);">Step 4:</strong> The first option shows coordinates like <span class="mono" style="color: var(--accent);">35.851800, 71.786400</span> — click it to copy<br><br>
+            <strong style="color: var(--text-primary);">Step 5:</strong> The first number is <strong>Latitude</strong>, the second is <strong>Longitude</strong>. Paste them into the fields on the left.<br><br>
+            <div style="padding: 0.75rem; background: var(--bg-secondary); border-radius: 5px; border: 1px solid var(--border); margin-top: 0.5rem;">
+                <strong style="color: var(--yellow);">Pakistan coordinate ranges:</strong><br>
+                Latitude: 24° (Karachi) to 37° (Chitral)<br>
+                Longitude: 60° (Gwadar) to 77° (Azad Kashmir)
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Save form data when user types (survives tab switching)
+    const form = document.getElementById('zone-form');
+    const fields = ['name', 'description', 'severity_level', 'latitude', 'longitude', 'population_affected'];
+    const storageKey = 'drsc_register_zone';
+
+    // Restore saved data
+    try {
+        const saved = JSON.parse(sessionStorage.getItem(storageKey) || '{}');
+        fields.forEach(f => {
+            if (saved[f] && document.getElementById(f)) {
+                document.getElementById(f).value = saved[f];
+            }
+        });
+    } catch(e) {}
+
+    // Save on every input change
+    fields.forEach(f => {
+        const el = document.getElementById(f);
+        if (el) {
+            el.addEventListener('input', saveForm);
+            el.addEventListener('change', saveForm);
+        }
+    });
+
+    function saveForm() {
+        const data = {};
+        fields.forEach(f => {
+            const el = document.getElementById(f);
+            if (el) data[f] = el.value;
+        });
+        sessionStorage.setItem(storageKey, JSON.stringify(data));
+    }
+
+    // Clear saved data on successful submit
+    form.addEventListener('submit', function() {
+        sessionStorage.removeItem(storageKey);
+    });
+</script>
+{% endblock %}

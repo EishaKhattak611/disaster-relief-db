@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Disaster Relief{% endblock %} — DRSC Optimizer</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-mark">⬡</div>
+            <div class="logo-text">
+                <span class="logo-title">DRSC</span>
+                <span class="logo-sub">Optimizer</span>
+            </div>
+            <button class="sidebar-toggle" onclick="document.body.classList.toggle('sidebar-collapsed')" title="Toggle sidebar">☰</button>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">OPERATIONS</span>
+            <a href="{% url 'coordinator_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'coordinator_dashboard' %}active{% endif %}">
+                <span class="nav-icon">◈</span><span class="nav-text"> Dashboard</span>
+            </a>
+            {% if role != 'Driver' and role != 'Viewer' %}
+            <a href="{% url 'create_dispatch' %}" class="nav-link {% if request.resolver_match.url_name == 'create_dispatch' %}active{% endif %}">
+                <span class="nav-icon">▸</span><span class="nav-text"> New Dispatch</span>
+            </a>
+            <a href="{% url 'register_zone' %}" class="nav-link {% if request.resolver_match.url_name == 'register_zone' %}active{% endif %}">
+                <span class="nav-icon">⚑</span><span class="nav-text"> Report Zone</span>
+            </a>
+            {% endif %}
+            {% if role == 'Driver' %}
+            <a href="{% url 'driver_dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'driver_dashboard' %}active{% endif %}">
+                <span class="nav-icon">▸</span><span class="nav-text"> My Dispatches</span>
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">LOGISTICS</span>
+            <a href="{% url 'inventory' %}" class="nav-link {% if request.resolver_match.url_name == 'inventory' %}active{% endif %}">
+                <span class="nav-icon">▦</span><span class="nav-text"> Inventory</span>
+            </a>
+            {% if role == 'Admin' %}
+            <a href="{% url 'restock_inventory' %}" class="nav-link {% if request.resolver_match.url_name == 'restock_inventory' %}active{% endif %}">
+                <span class="nav-icon">+</span><span class="nav-text"> Restock</span>
+            </a>
+            <a href="{% url 'audit_logs' %}" class="nav-link {% if request.resolver_match.url_name == 'audit_logs' %}active{% endif %}">
+                <span class="nav-icon">◉</span><span class="nav-text"> Audit Trail</span>
+            </a>
+            {% endif %}
+        </div>
+
+        {% if role == 'Admin' %}
+        <div class="nav-section">
+            <span class="nav-label">ADMINISTRATION</span>
+            <a href="{% url 'fleet_management' %}" class="nav-link {% if request.resolver_match.url_name == 'fleet_management' %}active{% endif %}">
+                <span class="nav-icon">⬡</span><span class="nav-text"> Fleet</span>
+            </a>
+            <a href="{% url 'manage_users' %}" class="nav-link {% if request.resolver_match.url_name == 'manage_users' %}active{% endif %}">
+                <span class="nav-icon">◎</span><span class="nav-text"> Users</span>
+            </a>
+            <a href="/admin/" class="nav-link" target="_blank">
+                <span class="nav-icon">⚙</span><span class="nav-text"> Admin Panel</span>
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="sidebar-footer">
+            <div class="user-badge">
+                <div class="user-avatar">{{ username|first|upper }}</div>
+                <div class="user-info">
+                    <span class="user-name">{{ username }}</span>
+                    <span class="user-role">{{ role }}</span>
+                </div>
+            </div>
+            <div class="sidebar-actions" style="display: flex; gap: 0.5rem;">
+                <a href="{% url 'change_password' %}" class="logout-btn" style="flex: 1;">Password</a>
+                <a href="{% url 'logout' %}" class="logout-btn" style="flex: 1;">Sign Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="content">
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+                <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        document.querySelectorAll('.alert').forEach(el => {
+            setTimeout(() => el.remove(), 5000);
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

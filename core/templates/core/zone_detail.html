@@ -1,0 +1,136 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ zone.name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ zone.name }}</h1>
+        <p class="page-subtitle">
+            <span class="severity severity-{{ zone.severity_level|lower }}">{{ zone.severity_level }}</span>
+            Disaster Zone
+        </p>
+    </div>
+    <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="dashboard-grid">
+    <div class="panel">
+        <div class="panel-header"><h2>Zone Information</h2></div>
+        <div class="panel-body">
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Severity</span>
+                    <span class="severity severity-{{ zone.severity_level|lower }}">{{ zone.severity_level }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Population Affected</span>
+                    <span>{{ zone.population_affected|default:"Unknown" }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Coordinates</span>
+                    <span class="mono">{{ zone.latitude }}, {{ zone.longitude }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status</span>
+                    <span>{% if zone.is_active %}Active{% else %}Inactive{% endif %}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Logged At</span>
+                    <span class="mono">{{ zone.logged_at|date:"d M Y H:i" }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Reported By</span>
+                    <span>{{ zone.reported_by.username }}</span>
+                </div>
+                {% if zone.description %}
+                <div class="detail-item full-span">
+                    <span class="detail-label">Description</span>
+                    <span>{{ zone.description }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Nearest Warehouses with real distances -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Nearest Warehouses</h2>
+            <span class="badge badge-count" style="font-size: 0.65rem;">HAVERSINE</span>
+        </div>
+        <div class="panel-body">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Warehouse</th>
+                        <th>Distance</th>
+                        <th>Items in Stock</th>
+                        <th>Total Units</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for w in nearest_warehouses %}
+                    <tr>
+                        <td><strong>{{ w.warehouse.name }}</strong></td>
+                        <td>
+                            {% if w.distance_km < 100 %}
+                            <span class="stock-ok">{{ w.distance_km }} km</span>
+                            {% elif w.distance_km < 300 %}
+                            <span class="stock-low">{{ w.distance_km }} km</span>
+                            {% else %}
+                            <span class="stock-critical">{{ w.distance_km }} km</span>
+                            {% endif %}
+                        </td>
+                        <td class="mono">{{ w.total_items }}</td>
+                        <td class="mono">{{ w.total_stock }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="empty-state">No active warehouses found</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="padding: 0.75rem 1rem; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border);">
+                Distances calculated in real-time using Haversine formula (great-circle, R = 6,371 km)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dispatches to this zone -->
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>Dispatches to this Zone</h2>
+        <span class="badge badge-count">{{ dispatches|length }}</span>
+    </div>
+    <div class="panel-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Vehicle</th>
+                    <th>Coordinator</th>
+                    <th>Departed</th>
+                    <th>Arrived</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in dispatches %}
+                <tr onclick="window.location='{% url 'dispatch_detail' d.dispatch_id %}'" class="clickable-row">
+                    <td class="mono">#{{ d.dispatch_id }}</td>
+                    <td><span class="severity severity-{{ d.priority|lower }}">{{ d.priority }}</span></td>
+                    <td><span class="status status-{{ d.status|lower }}">{{ d.status }}</span></td>
+                    <td>{{ d.vehicle.license_plate }}</td>
+                    <td>{{ d.user.username }}</td>
+                    <td class="mono">{{ d.departure_time|date:"d M H:i"|default:"Pending" }}</td>
+                    <td class="mono">{{ d.arrival_time|date:"d M H:i"|default:"—" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="empty-state">No dispatches to this zone yet</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

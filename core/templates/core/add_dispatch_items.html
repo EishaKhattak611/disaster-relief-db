@@ -1,0 +1,235 @@
+{% extends 'core/base.html' %}
+{% block title %}Add Items — Dispatch #{{ dispatch.dispatch_id }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Add Items to Dispatch #{{ dispatch.dispatch_id }}</h1>
+        <p class="page-subtitle">{{ dispatch.zone.name }} — {{ dispatch.priority }} priority</p>
+    </div>
+    <a href="{% url 'dispatch_detail' dispatch.dispatch_id %}" class="btn btn-secondary">View Dispatch →</a>
+</div>
+
+<div class="dashboard-grid">
+    <div class="panel">
+        <div class="panel-header"><h2>Add Item to Cargo</h2></div>
+        <div class="panel-body" style="padding: 1.25rem;">
+            <form method="post" action="{% url 'add_dispatch_items' dispatch.dispatch_id %}" id="cargo-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="warehouse_id">Source Warehouse</label>
+                    <select name="warehouse_id" id="warehouse_id" required onchange="updateStockInfo()">
+                        <option value="">Select warehouse</option>
+                        {% for w in nearest_warehouses %}
+                        <option value="{{ w.warehouse.warehouse_id }}">
+                            {{ w.warehouse.name }} — {{ w.distance_km }} km ({{ w.total_stock }} units)
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <p class="form-help">Sorted by distance to zone (Haversine)</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Item</label>
+                    <div class="category-pills">
+                        <button type="button" class="cat-pill active" data-cat="" onclick="filterCat(this, '')">All</button>
+                        {% for cat in categories %}
+                        <button type="button" class="cat-pill" data-cat="{{ cat.category_id }}" onclick="filterCat(this, '{{ cat.category_id }}')">{{ cat.name }}</button>
+                        {% endfor %}
+                    </div>
+                    <div class="combo-box">
+                        <input type="text" id="item-search" placeholder="Type to search items..." autocomplete="off" oninput="filterItems()" onfocus="showDropdown()">
+                        <div class="combo-dropdown" id="combo-dropdown">
+                            {% for item in items %}
+                            <div class="combo-option" data-value="{{ item.item_id }}" data-cat="{{ item.category.category_id }}" data-name="{{ item.name|lower }}" onclick="selectItem(this)">
+                                <span class="combo-item-name">{{ item.name }}</span>
+                                <span class="combo-item-meta">{{ item.category.name }} — {{ item.unit_of_measure }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <input type="hidden" name="item_id" id="item_id" required>
+                </div>
+
+                <div id="stock-info" class="stock-info-box" style="display: none;"></div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required placeholder="Enter quantity">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">+ Add to Cargo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h2>Nearest Warehouses</h2>
+            <span class="badge badge-count">HAVERSINE</span>
+        </div>
+        <div class="panel-body">
+            <table class="data-table">
+                <thead><tr><th>Warehouse</th><th>Distance</th><th>Items</th><th>Stock</th></tr></thead>
+                <tbody>
+                    {% for w in nearest_warehouses %}
+                    <tr>
+                        <td><strong>{{ w.warehouse.name }}</strong></td>
+                        <td>
+                            {% if w.distance_km < 100 %}<span class="stock-ok">{{ w.distance_km }} km</span>
+                            {% elif w.distance_km < 300 %}<span class="stock-low">{{ w.distance_km }} km</span>
+                            {% else %}<span class="stock-critical">{{ w.distance_km }} km</span>{% endif %}
+                        </td>
+                        <td class="mono">{{ w.total_items }}</td>
+                        <td class="mono">{{ w.total_stock }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel full-width">
+    <div class="panel-header">
+        <h2>Current Cargo Manifest</h2>
+        <span class="badge badge-count">{{ line_items|length }} items</span>
+    </div>
+    <div class="panel-body">
+        <table class="data-table">
+            <thead><tr><th>Item</th><th>Category</th><th>From Warehouse</th><th>Distance</th><th>Quantity</th><th>Action</th></tr></thead>
+            <tbody>
+                {% for li in line_items %}
+                <tr>
+                    <td><strong>{{ li.item.name }}</strong></td>
+                    <td>{{ li.item.category.name }}</td>
+                    <td>{{ li.warehouse.name }}</td>
+                    <td>{% if li.distance_km < 100 %}<span class="stock-ok">{{ li.distance_km }} km</span>{% elif li.distance_km < 300 %}<span class="stock-low">{{ li.distance_km }} km</span>{% else %}<span class="stock-critical">{{ li.distance_km }} km</span>{% endif %}</td>
+                    <td class="mono">{{ li.quantity_dispatched }}</td>
+                    <td><a href="{% url 'remove_dispatch_item' dispatch.dispatch_id li.line_item_id %}" class="btn btn-sm btn-danger" onclick="return confirm('Remove this item and restore inventory?')">Remove</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="empty-state">No items added yet. Use the form above to add cargo.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top: 1rem; display: flex; gap: 0.75rem;">
+    <a href="{% url 'dispatch_detail' dispatch.dispatch_id %}" class="btn btn-primary">Done — View Dispatch</a>
+    <a href="{% url 'coordinator_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+    .category-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+    .cat-pill {
+        padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600;
+        border: 1px solid var(--border); background: transparent; color: var(--text-secondary);
+        cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .cat-pill:hover { border-color: var(--accent); color: var(--accent); }
+    .cat-pill.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .combo-box { position: relative; }
+    .combo-box input {
+        width: 100%; padding: 0.7rem 0.9rem; background: var(--bg-input); border: 1px solid var(--border);
+        border-radius: var(--radius-sm); color: var(--text-primary); font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .combo-box input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px rgba(74,124,255,0.15); }
+    .combo-dropdown {
+        display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: 250px;
+        overflow-y: auto; background: var(--bg-panel); border: 1px solid var(--border);
+        border-top: none; border-radius: 0 0 var(--radius-sm) var(--radius-sm); z-index: 50;
+    }
+    .combo-dropdown.show { display: block; }
+    .combo-option {
+        padding: 0.6rem 0.9rem; cursor: pointer; display: flex; flex-direction: column;
+        border-bottom: 1px solid var(--border); transition: background 0.1s;
+    }
+    .combo-option:hover { background: var(--bg-hover); }
+    .combo-option.hidden { display: none; }
+    .combo-option.selected { background: var(--bg-hover); border-left: 3px solid var(--accent); }
+    .combo-item-name { font-size: 0.85rem; color: var(--text-primary); font-weight: 600; }
+    .combo-item-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem; }
+    .stock-info-box {
+        padding: 0.75rem 1rem; border-radius: 5px; font-size: 0.85rem;
+        margin-bottom: 1rem; border: 1px solid var(--border);
+    }
+    .stock-ok-box { background: var(--green-bg); color: var(--green); border-color: rgba(38,222,129,0.2); }
+    .stock-low-box { background: var(--orange-bg); color: var(--orange); border-color: rgba(255,159,67,0.2); }
+    .stock-critical-box { background: var(--red-bg); color: var(--red); border-color: rgba(255,77,77,0.2); }
+    .stock-none-box { background: var(--bg-secondary); color: var(--text-muted); }
+</style>
+<script>
+    const stockData = {{ stock_json|safe }};
+    let activeCat = '';
+
+    function filterCat(btn, catId) {
+        document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = catId;
+        filterItems();
+    }
+
+    function filterItems() {
+        const search = document.getElementById('item-search').value.toLowerCase();
+        const dropdown = document.getElementById('combo-dropdown');
+        dropdown.classList.add('show');
+        dropdown.querySelectorAll('.combo-option').forEach(opt => {
+            const matchCat = !activeCat || opt.dataset.cat === activeCat;
+            const matchSearch = !search || opt.dataset.name.includes(search);
+            opt.classList.toggle('hidden', !(matchCat && matchSearch));
+        });
+    }
+
+    function showDropdown() {
+        filterItems();
+    }
+
+    function selectItem(el) {
+        document.getElementById('item_id').value = el.dataset.value;
+        document.getElementById('item-search').value = el.querySelector('.combo-item-name').textContent;
+        document.getElementById('combo-dropdown').classList.remove('show');
+        el.parentElement.querySelectorAll('.combo-option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        updateStockInfo();
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.combo-box')) {
+            document.getElementById('combo-dropdown').classList.remove('show');
+        }
+    });
+
+    function updateStockInfo() {
+        const whId = document.getElementById('warehouse_id').value;
+        const itemId = document.getElementById('item_id').value;
+        const infoBox = document.getElementById('stock-info');
+        if (!whId || !itemId) { infoBox.style.display = 'none'; return; }
+        infoBox.style.display = 'block';
+        const stock = stockData[whId] && stockData[whId][itemId];
+        if (stock === undefined || stock === null) {
+            infoBox.className = 'stock-info-box stock-none-box';
+            infoBox.innerHTML = '⚠ This item is <strong>not stocked</strong> at the selected warehouse.';
+        } else if (stock === 0) {
+            infoBox.className = 'stock-info-box stock-critical-box';
+            infoBox.innerHTML = '⚠ <strong>Out of stock</strong> — 0 units available.';
+        } else if (stock < 30) {
+            infoBox.className = 'stock-info-box stock-critical-box';
+            infoBox.innerHTML = '⚠ <strong>Critical stock:</strong> only ' + stock + ' units. Consider another warehouse.';
+        } else if (stock < 80) {
+            infoBox.className = 'stock-info-box stock-low-box';
+            infoBox.innerHTML = '⚠ <strong>Low stock:</strong> ' + stock + ' units available.';
+        } else {
+            infoBox.className = 'stock-info-box stock-ok-box';
+            infoBox.innerHTML = '✓ <strong>' + stock + ' units</strong> available.';
+        }
+    }
+</script>
+{% endblock %}
